@@ -1,0 +1,54 @@
+workflows:
+  unity-android:
+    name: Snake Rescue Android
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        PACKAGE_NAME: com.mohammedauwal.snakerescue
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    scripts:
+      - name: Build Unity Project
+        script: |
+          # Unity is pre-installed on Codemagic Unity instances
+          # Find Unity installation
+          UNITY_PATH=$(mdfind "kMDItemCFBundleIdentifier == 'com.unity3d.UnityEditor'" | head -1)
+          
+          if [ -z "$UNITY_PATH" ]; then
+            echo "Unity not found, using default path"
+            UNITY_PATH="/Applications/Unity/Hub/Editor/2022.3.0f1/Unity.app"
+          fi
+          
+          echo "Unity Path: $UNITY_PATH"
+          
+          # Build the project
+          "$UNITY_PATH/Contents/MacOS/Unity" \
+            -batchmode \
+            -quit \
+            -projectPath . \
+            -buildTarget Android \
+            -executeMethod UnityEditor.BuildPlayerWindow.BuildPlayerMethod \
+            -logFile /dev/stdout \
+            -nographics \
+            -outputPath build/SnakeRescue.apk
+    artifacts:
+      - build/*.apk
+      - build/*.aab
+    publishing:
+      github:
+        auth: $GITHUB_TOKEN
+        release: true
+        tag: $CM_TAG
+        draft: false
+        prerelease: false
+        commit_message: false
+        generate_release_notes: true
