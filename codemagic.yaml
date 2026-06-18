@@ -1,0 +1,19 @@
+workflows:
+  unity-android:
+    name: Unity Android Build
+    max_build_duration: 60
+    environment:
+      vars:
+        UNITY_VERSION: 2022.3.0f1
+    scripts:
+      - name: Set Unity Version
+        script: |
+          unity-version $UNITY_VERSION
+      - name: Build Android
+        script: |
+          unity-build \
+            --projectPath . \
+            --buildTarget Android \
+            --outputPath build/
+    artifacts:
+      - build/*.apk
