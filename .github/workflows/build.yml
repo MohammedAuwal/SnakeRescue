@@ -36,7 +36,7 @@ jobs:
           unityVersion: 2022.3.0f1
           buildName: SnakeRescue
           versioning: Semantic
-          outputs: build
+          buildsPath: build
 
       - name: Upload Build
         uses: actions/upload-artifact@v4
