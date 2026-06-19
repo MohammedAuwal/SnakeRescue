@@ -1,0 +1,22 @@
+workflows:
+  unity-android:
+    name: Snake Rescue
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        PACKAGE_NAME: com.mohammedauwal.snakerescue
+      unity: 2022.3.0f1
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+    scripts:
+      - name: Build Android
+        script: |
+          cd $CM_BUILD_DIR
+          unity-build --platform Android --output build/
+    artifacts:
+      - build/*.apk
