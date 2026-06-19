@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using SnakeRescue.Data;
@@ -39,3 +40,4 @@ public class AutoGenerateConfigs
         Debug.Log("Default Assets Generated Successfully.");
     }
 }
+#endif
