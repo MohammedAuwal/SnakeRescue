@@ -1,0 +1,7 @@
+{
+  "projectName": "SnakeRescue",
+  "version": "1.0.0",
+  "platform": "Android",
+  "scriptingBackend": "IL2CPP",
+  "architecture": "ARM64"
+}
